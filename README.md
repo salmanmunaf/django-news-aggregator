@@ -64,35 +64,23 @@ You should also set an expiry on this data. If a user makes a request that you h
 
 Note that you should not store this data in the cache, but rather in the database.
 
-### Constraints
+### How to Run
 
-You have to use **Django (version 1.8 - 2.2)** and a **relational database (MySQL, PostgreSQL, SQLite)** for this task.
+Clone this repository.
+  ```
+$ cd django-news-aggregator
+```
+Make sure you have Python > 3.6 installed
 
-This needs to be a running Python application on your localhost that serves an HTTP request not a console application.
+Create a virtual environment. Take a look at virtualenv, python3-venv
+  ```
+$ pip install django
+```
+  ```
+$ pip install djangorestframework
+```
+ ```
+python manage.py runserver
+```
 
-### Submission
-
-You should upload your code to a Github/Bitbucket repository (private or public) and share it with [musab@stellic.com](mailto:musab@stellic.com). Your repository should have a README.md that explains how to run the code and if youâ€™ve done anything extra.
-
-The application that you submit must have thoughtful design decisions, well documented and unit tested code.
-
-You are free to ask questions/clarifications at [musab@stellic.com](mailto:musab@stellic.com). You will ***not*** be penalized for this.
-
-### Assessment
-
-This assignment is meant to test: 
-
-- Proficiency with Python and Django
-- Ability to understand and use 3rd party APIs
-- Ability to parse different forms of data
-- Ability to design an extendible database schema
-- Ability to use Version Control
-- Ability to write unit tests
-- Ability to write documentation
-
-**What we will be looking for:**
-
-- Great code design and architecture that is extendible to more 3rd party news apps or more fields
-- Well documented and clean code with unit tests
-
-*Best of luck!*
+You can access the application by opening the link at which project is running (displayed in terminal).
