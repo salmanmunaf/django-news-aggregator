@@ -7,12 +7,8 @@ import requests, json, datetime
 
 from .models import News
 
+#Should be stored as an environment variable
 TOKEN = '4ee7621bf86f4cc7ad34b55089e71e0d'
-API_DATA = [{ 'url': 'https://newsapi.org/v2/top-headlines?sources=bbc-news',
-'searchUrl' : 'https://newsapi.org/v2/everything',
-'headers': { 'Authorization' : 'Basic ' + TOKEN },
-'api': 'news'},{ 'url': 'https://reddit.com/r/news/new.json',
-'searchUrl': 'https://reddit.com/r/news/search.json', 'headers': {'User-agent': 'bot 0.1'}, 'api': 'reddit'}]
 
 class NewsView(APIView):
     def extractDataFromRedditApi(self, data):
@@ -59,23 +55,29 @@ class NewsView(APIView):
         responseData = json.loads(r.text)
         return self.extractDataFromRedditApi(responseData)
 
-    def StoreDb(self, articles, query = False):
+    def storeInDb(self, articles, query = False):
         for article in articles:
             news=News(query=(query if query else 'list'), request_date=datetime.date.today(),\
                  source=article['source'], headline=article['headline'], link=article['link'])
             news.save()
 
+    def getFromDb(self, query = None):
+        news = News.objects.filter(query=(query if query else 'list'))
+        return [{'headline': obj.headline,
+                           'link': obj.link,
+                           'source': obj.source} for obj in news]
 
     def get(self, request):
-        query = request.GET.get('query')
-        news = []
-        if (query):
-            news = self.requestNewsApi(query)
-            news += self.requestRedditApi(query)
-            self.StoreDb(news, query)
-        else:
-            news = self.requestNewsApi()
-            news += self.requestRedditApi()
-            self.StoreDb(news)
+        query = request.query_params.get('query', None)
+        news = self.getFromDb(query)
+        if (not news):
+            if (query):
+                news = self.requestNewsApi(query)
+                news += self.requestRedditApi(query)
+                self.storeInDb(news, query)
+            else:
+                news = self.requestNewsApi()
+                news += self.requestRedditApi()
+                self.storeInDb(news)
             
-        return Response({"news": news})
+        return Response(news)
