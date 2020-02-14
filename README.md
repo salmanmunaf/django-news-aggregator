@@ -2,11 +2,11 @@
 
 ### Description
 
-For this assignment you have to implement an application that aggregates news from two different APIs. The APIs youâ€™ll be using are Reddit and [News API](https://newsapi.org/). This application should be running on your localhost and serve the result in JSON format from an endpoint whenever it gets a request. You are allowed to use 3rd party wrappers of these APIs.
+For this assignment you have to implement an application that aggregates news from two different APIs. The APIs you’ll be using are Reddit and [News API](https://newsapi.org/). This application should be running on your localhost and serve the result in JSON format from an endpoint whenever it gets a request. You are allowed to use 3rd party wrappers of these APIs.
 
 ### Part I
 
-The two functionalities that need to be implemented are â€œlistâ€ and â€œsearchâ€.
+The two functionalities that need to be implemented are “list” and “search”.
 
 This is an example request for a generic GET request.
 
@@ -50,9 +50,9 @@ You should also implement a feature that allows someone to search.
       },
     ]
 
-*Suggestion:* Try to use /r/news for Reddit and the general category for News API (you donâ€™t have to but itâ€™s worth checking out).
+*Suggestion:* Try to use /r/news for Reddit and the general category for News API (you don’t have to but it’s worth checking out).
 
-You have to at least return the three fields that are in the sample requests above. You can add more fields if youâ€™d like.
+You have to at least return the three fields that are in the sample requests above. You can add more fields if you’d like.
 
 ### Part II
 
