@@ -3,14 +3,18 @@ from django.shortcuts import render
 # Create your views here.
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
+from rest_framework.decorators import api_view
+from rest_framework import status
 import requests, json, datetime
-
+from .serializers import NewsSerializer
 from .models import News
 
 #Should be stored as an environment variable
 TOKEN = '4ee7621bf86f4cc7ad34b55089e71e0d'
 
-class NewsView(APIView):
+@api_view(['GET', ])
+class NewsView(ListAPIView):
     def extractDataFromRedditApi(self, data):
         articles = []
         for posts in data['data']['children']:
@@ -63,9 +67,8 @@ class NewsView(APIView):
 
     def getFromDb(self, query = None):
         news = News.objects.filter(query=(query if query else 'list'))
-        return [{'headline': obj.headline,
-                           'link': obj.link,
-                           'source': obj.source} for obj in news]
+        serializer = NewsSerializer(news)
+        return serializer.data
 
     def get(self, request):
         query = request.query_params.get('query', None)
@@ -81,3 +84,6 @@ class NewsView(APIView):
                 self.storeInDb(news)
             
         return Response(news)
+
+# class NewsListView(ListAPIView):
+#     queryset = News.
