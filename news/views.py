@@ -13,7 +13,6 @@ from .models import News
 #Should be stored as an environment variable
 TOKEN = '4ee7621bf86f4cc7ad34b55089e71e0d'
 
-@api_view(['GET', ])
 class NewsView(ListAPIView):
     def extractDataFromRedditApi(self, data):
         articles = []
@@ -67,8 +66,9 @@ class NewsView(ListAPIView):
 
     def getFromDb(self, query = None):
         news = News.objects.filter(query=(query if query else 'list'))
-        serializer = NewsSerializer(news)
-        return serializer.data
+        return [{'headline': obj.headline,
+                           'link': obj.link,
+                           'source': obj.source} for obj in news]
 
     def get(self, request):
         query = request.query_params.get('query', None)
