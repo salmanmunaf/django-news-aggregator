@@ -27,7 +27,6 @@ class NewsView(ListAPIView):
 
     def extractDataFromNewsApi(self, data):
         articles = []
-        print(data)
         for posts in data['articles']:
             post = {}
             post['headline'] = posts['title']
@@ -65,7 +64,7 @@ class NewsView(ListAPIView):
             news.save()
 
     def getFromDb(self, query = None):
-        news = News.objects.filter(query=(query if query else 'list'))
+        news = News.objects.filter(query=(query if query else 'list'), request_date=datetime.date.today())
         return [{'headline': obj.headline,
                            'link': obj.link,
                            'source': obj.source} for obj in news]
@@ -83,7 +82,4 @@ class NewsView(ListAPIView):
                 news += self.requestRedditApi()
                 self.storeInDb(news)
             
-        return Response(news)
-
-# class NewsListView(ListAPIView):
-#     queryset = News.
+        return Response(news, status=status.HTTP_200_OK)
